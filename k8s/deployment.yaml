@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-deployment
+spec:
+  selector:
+    matchLabels:
+      pod: application
+  template:
+    metadata:
+      name: application-deployment-template
+      labels:
+        pod: application
+    spec:
+      containers:
+        - name: application-deployment-container
+          image: gcr.io/nomadic-mesh/docker-image-demo
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_NAME
+                  name: application-configmap
